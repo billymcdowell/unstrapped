@@ -4,7 +4,7 @@ members = ["src-tauri", "crates/unstrapped-core", "crates/unstrapped-emulator"]
 
 [workspace.package]
 edition = "2024"
-version = "0.1.0"
+version = "0.2.0"
 license = "MIT"
 authors = ["Billy McDowell"]
 repository = "https://github.com/billymcdowell/unstrapped"
