@@ -1,0 +1,97 @@
+name: Release
+
+# Push a tag like v0.2.0 to build a universal macOS app (Apple Silicon + Intel) and attach it
+# to a draft GitHub release. Review the draft on GitHub, then publish it.
+#
+#   git tag v0.2.0 && git push origin v0.2.0
+#
+# The tag must match the "version" in src-tauri/tauri.conf.json.
+#
+# Code signing and notarization are optional. Without the secrets below the app is unsigned and
+# macOS Gatekeeper asks users to approve it on first launch (see the README). To sign, add these
+# repository secrets: APPLE_CERTIFICATE (base64 .p12), APPLE_CERTIFICATE_PASSWORD,
+# APPLE_SIGNING_IDENTITY, and for notarization APPLE_ID, APPLE_PASSWORD (app-specific password)
+# and APPLE_TEAM_ID.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (for example v0.2.0). It must already exist."
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build macOS app
+    runs-on: macos-latest
+    env:
+      RELEASE_TAG: ${{ github.event.inputs.tag || github.ref_name }}
+      HAS_SIGNING: ${{ secrets.APPLE_CERTIFICATE != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+
+      - name: Check the tag matches the app version
+        run: |
+          version=$(node -p "require('./src-tauri/tauri.conf.json').version")
+          if [ "v$version" != "$RELEASE_TAG" ]; then
+            echo "::error::Tag $RELEASE_TAG does not match tauri.conf.json version $version"
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install front-end dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: cargo test --workspace
+
+      - name: Build and upload (unsigned)
+        if: env.HAS_SIGNING != 'true'
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ env.RELEASE_TAG }}
+          releaseName: Unstrapped ${{ env.RELEASE_TAG }}
+          releaseBody: |
+            See the README for install steps. This build is not signed: on first launch,
+            right-click Unstrapped.app and choose Open, or run `xattr -cr /Applications/Unstrapped.app`.
+          releaseDraft: true
+          prerelease: false
+          args: --target universal-apple-darwin
+
+      - name: Build, sign, notarize and upload
+        if: env.HAS_SIGNING == 'true'
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        with:
+          tagName: ${{ env.RELEASE_TAG }}
+          releaseName: Unstrapped ${{ env.RELEASE_TAG }}
+          releaseBody: See the README for install steps.
+          releaseDraft: true
+          prerelease: false
+          args: --target universal-apple-darwin

@@ -1,0 +1,119 @@
+/* Strap design tokens. Light by default, dark via prefers-color-scheme. */
+:root {
+  color-scheme: light dark;
+
+  /* surfaces */
+  --bg-solid: #eef0f4;          /* used when no glass is available */
+  --sidebar-solid: #e4e7ee;
+  --glass-sidebar: rgba(255, 255, 255, 0.28);
+  --card: rgba(255, 255, 255, 0.78);   /* slightly solid so charts stay readable */
+  --card-border: rgba(20, 24, 40, 0.08);
+  --card-shadow: 0 1px 2px rgba(20, 24, 40, 0.06), 0 8px 24px rgba(20, 24, 40, 0.05);
+  --hairline: rgba(20, 24, 40, 0.1);
+  --hover: rgba(20, 24, 40, 0.06);
+  --active: rgba(20, 24, 40, 0.1);
+
+  /* text */
+  --text: #151826;
+  --text-2: #4a5068;
+  --text-3: #7c829a;
+
+  /* brand + metric colours */
+  --accent: #2f7cf6;
+  --rec-red: #e5484d;
+  --rec-yellow: #e9a800;
+  --rec-green: #25b866;
+  --sleep: #7a6ae6;
+  --strain: #1f8fe8;
+  --stress: #d4579f;
+  --band-track: rgba(20, 24, 40, 0.09);
+
+  /* stages */
+  --stage-awake: #f0a04b;
+  --stage-light: #8fb7f0;
+  --stage-deep: #3f5fcf;
+  --stage-rem: #a96fe0;
+
+  /* HR zones 1-5 */
+  --zone-1: #7da3c4;
+  --zone-2: #38b2d8;
+  --zone-3: #35b987;
+  --zone-4: #ee9e2f;
+  --zone-5: #e5484d;
+
+  /* status */
+  --ok: #25b866;
+  --warn: #ee9a1f;
+  --alert: #e5484d;
+
+  /* chart */
+  --chart-grid: rgba(20, 24, 40, 0.08);
+  --chart-axis: #7c829a;
+  --span-sleep: rgba(122, 106, 230, 0.12);
+  --span-activity: rgba(31, 143, 232, 0.14);
+  --span-gap: rgba(120, 125, 145, 0.18);
+
+  /* scale */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
+  --titlebar: 44px; /* room for traffic lights */
+  --sidebar-w: 212px;
+
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-solid: #11131b;
+    --sidebar-solid: #171a24;
+    --glass-sidebar: rgba(20, 22, 32, 0.32);
+    --card: rgba(30, 33, 46, 0.78);
+    --card-border: rgba(255, 255, 255, 0.07);
+    --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+    --hairline: rgba(255, 255, 255, 0.1);
+    --hover: rgba(255, 255, 255, 0.07);
+    --active: rgba(255, 255, 255, 0.12);
+
+    --text: #f1f3fa;
+    --text-2: #b4b9cf;
+    --text-3: #868ca6;
+
+    --accent: #5b9bff;
+    --rec-red: #ff5d66;
+    --rec-yellow: #f5c030;
+    --rec-green: #3fd884;
+    --sleep: #9a8cff;
+    --strain: #4cb0ff;
+    --stress: #ec78bb;
+    --band-track: rgba(255, 255, 255, 0.1);
+
+    --stage-awake: #f5ad5e;
+    --stage-light: #6f9be0;
+    --stage-deep: #5a7bf0;
+    --stage-rem: #bd86f0;
+    --zone-1: #7f9fbd;
+    --zone-2: #4cc3e8;
+    --zone-3: #45d09a;
+    --zone-4: #f5ae45;
+    --zone-5: #ff5d66;
+    --ok: #3fd884;
+    --warn: #f5a83c;
+    --alert: #ff5d66;
+
+    --chart-grid: rgba(255, 255, 255, 0.08);
+    --chart-axis: #868ca6;
+    --span-sleep: rgba(154, 140, 255, 0.14);
+    --span-activity: rgba(76, 176, 255, 0.16);
+    --span-gap: rgba(160, 165, 190, 0.18);
+  }
+}
+
+/* Glass modes, set by lib/glass.ts on <html data-glass>. */
+:root[data-glass="real"] { --glass-sidebar: rgba(255, 255, 255, 0.12); }
+@media (prefers-color-scheme: dark) { :root[data-glass="real"] { --glass-sidebar: rgba(10, 12, 20, 0.12); } }
+/* Real glass already lightens/blurs the backdrop; make cards a bit more solid for contrast. */
+:root[data-glass="real"] { --card: rgba(255, 255, 255, 0.84); }
+@media (prefers-color-scheme: dark) { :root[data-glass="real"] { --card: rgba(30, 33, 46, 0.82); } }

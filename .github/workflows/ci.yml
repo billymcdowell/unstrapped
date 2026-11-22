@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test and build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install front-end dependencies
+        run: npm ci
+
+      - name: Type-check and build the UI
+        run: npm run build
+
+      - name: Rust tests (protocol, metrics, emulator, app)
+        run: cargo test --workspace
+
+      # About 7 minutes, so only on pushes to main, not on every pull request.
+      - name: End-to-end tests against the emulator over TCP
+        if: github.event_name == 'push'
+        run: cargo test -p unstrapped --test e2e_emulator --release -- --ignored

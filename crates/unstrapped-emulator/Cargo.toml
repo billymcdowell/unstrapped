@@ -1,0 +1,19 @@
+[package]
+name = "unstrapped-emulator"
+description = "Emulates a WHOOP 4.0 / 5.0 strap: synthetic physiology, protocol-exact frames, history storage, served over a local TCP socket."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+unstrapped-core = { path = "../unstrapped-core" }
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+hex.workspace = true
+
+[[bin]]
+name = "unstrapped-emulator"
+path = "src/bin/unstrapped-emulator.rs"

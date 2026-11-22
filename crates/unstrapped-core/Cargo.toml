@@ -1,0 +1,11 @@
+[package]
+name = "unstrapped-core"
+description = "WHOOP strap protocol (framing, CRCs, decoding, commands) and health metrics. Pure Rust, no Tauri."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde.workspace = true
