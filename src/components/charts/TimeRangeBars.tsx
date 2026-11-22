@@ -23,7 +23,7 @@ export function TimeRangeBars({ rows, color, height }: { rows: { label: string; 
       yAxis: { type: "category", inverse: true, data: rows.map((r) => r.label), axisTick: { show: false }, axisLine: { show: false }, axisLabel: { color: th.text, fontSize: 10 } },
       series: [
         { type: "bar", stack: "s", itemStyle: { color: "transparent" }, silent: true, data: starts },
-        { type: "bar", stack: "s", barWidth: 10, itemStyle: { color: color ? resolveColor(color) : th.sleep, borderRadius: 4 }, data: durs },
+        { type: "bar", stack: "s", barWidth: 8, itemStyle: { color: color ? resolveColor(color) : th.sleep, borderRadius: 4 }, data: durs },
       ],
     };
   }, [rows, color, scheme]);

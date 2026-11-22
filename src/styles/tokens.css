@@ -1,119 +1,138 @@
-/* Strap design tokens. Light by default, dark via prefers-color-scheme. */
+/* Unstrapped design tokens.
+ * Direction: calm clinical canvas (warm off-white with a faint dot grid), light geometric type,
+ * squared-off tiles, and grainy mesh-gradient "tone" tiles carrying white line art with a lime highlight.
+ * Light by default, dark via prefers-color-scheme. */
 :root {
   color-scheme: light dark;
 
   /* surfaces */
-  --bg-solid: #eef0f4;          /* used when no glass is available */
-  --sidebar-solid: #e4e7ee;
-  --glass-sidebar: rgba(255, 255, 255, 0.28);
-  --card: rgba(255, 255, 255, 0.78);   /* slightly solid so charts stay readable */
-  --card-border: rgba(20, 24, 40, 0.08);
-  --card-shadow: 0 1px 2px rgba(20, 24, 40, 0.06), 0 8px 24px rgba(20, 24, 40, 0.05);
-  --hairline: rgba(20, 24, 40, 0.1);
-  --hover: rgba(20, 24, 40, 0.06);
-  --active: rgba(20, 24, 40, 0.1);
+  --bg-solid: #e9e9e6;          /* window background when no glass is available */
+  --sidebar-solid: #ecece9;
+  --glass-sidebar: rgba(240, 240, 237, 0.82);  /* opaque enough that sidebar text stays AA over any wallpaper */
+  --canvas: #f4f4f1;            /* main content area */
+  --canvas-dot: rgba(26, 26, 22, 0.07);
+  --card: #fcfcfa;
+  --card-border: rgba(26, 26, 22, 0.055);
+  --card-shadow: 0 1px 1px rgba(26, 26, 22, 0.02);
+  --chip-bg: #ececea;           /* grey tag boxes, icon buttons */
+  --hairline: rgba(26, 26, 22, 0.1);
+  --hover: rgba(26, 26, 22, 0.045);
+  --active: rgba(26, 26, 22, 0.075);
 
   /* text */
-  --text: #151826;
-  --text-2: #4a5068;
-  --text-3: #7c829a;
+  --text: #1b1b19;
+  --text-2: #5e5e58;
+  --text-3: #686862;          /* AA (4.5:1) on canvas, card and chip */
 
-  /* brand + metric colours */
-  --accent: #2f7cf6;
-  --rec-red: #e5484d;
-  --rec-yellow: #e9a800;
-  --rec-green: #25b866;
-  --sleep: #7a6ae6;
-  --strain: #1f8fe8;
-  --stress: #d4579f;
-  --band-track: rgba(20, 24, 40, 0.09);
+  /* ink accent (buttons, focus, links) + lime highlight dot */
+  --accent: #1b1b19;
+  --on-accent: #fafaf7;
+  --lime: #cdec2b;
+  --lime-halo: rgba(205, 236, 43, 0.28);
+
+  /* metric colours: earthy, desaturated */
+  --rec-red: #df6e4e;
+  --rec-yellow: #d4ac22;
+  --rec-green: #4a9459;
+  --sleep: #6c84a6;
+  --strain: #dd8c35;
+  --stress: #c46f8c;
+  --band-track: rgba(26, 26, 22, 0.08);
 
   /* stages */
-  --stage-awake: #f0a04b;
-  --stage-light: #8fb7f0;
-  --stage-deep: #3f5fcf;
-  --stage-rem: #a96fe0;
+  --stage-awake: #e8a46c;
+  --stage-light: #a8bfd9;
+  --stage-deep: #4d6990;
+  --stage-rem: #9a8cc6;
 
   /* HR zones 1-5 */
-  --zone-1: #7da3c4;
-  --zone-2: #38b2d8;
-  --zone-3: #35b987;
-  --zone-4: #ee9e2f;
-  --zone-5: #e5484d;
+  --zone-1: #a8b6c2;
+  --zone-2: #86b7a6;
+  --zone-3: #9cbf5c;
+  --zone-4: #e1ad38;
+  --zone-5: #df6e4e;
 
   /* status */
-  --ok: #25b866;
-  --warn: #ee9a1f;
-  --alert: #e5484d;
+  --ok: #36744a;              /* status colours double as text, so they meet AA */
+  --warn: #d6962a;            /* fills/borders only, never text */
+  --alert: #b4452e;
 
   /* chart */
-  --chart-grid: rgba(20, 24, 40, 0.08);
-  --chart-axis: #7c829a;
-  --span-sleep: rgba(122, 106, 230, 0.12);
-  --span-activity: rgba(31, 143, 232, 0.14);
-  --span-gap: rgba(120, 125, 145, 0.18);
+  --chart-grid: rgba(26, 26, 22, 0.07);
+  --chart-axis: #686862;
+  --span-sleep: rgba(108, 132, 166, 0.13);
+  --span-activity: rgba(221, 140, 53, 0.14);
+  --span-gap: rgba(120, 120, 112, 0.16);
 
-  /* scale */
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 20px;
+  /* scale: squared-off corners */
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 8px;
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
-  --titlebar: 44px; /* room for traffic lights */
-  --sidebar-w: 212px;
+  --titlebar: 52px; /* room for traffic lights */
+  --sidebar-w: 216px;
 
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+  --font: "Urbanist Variable", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+
+  /* film grain for tone tiles */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-solid: #11131b;
-    --sidebar-solid: #171a24;
-    --glass-sidebar: rgba(20, 22, 32, 0.32);
-    --card: rgba(30, 33, 46, 0.78);
-    --card-border: rgba(255, 255, 255, 0.07);
-    --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
-    --hairline: rgba(255, 255, 255, 0.1);
-    --hover: rgba(255, 255, 255, 0.07);
-    --active: rgba(255, 255, 255, 0.12);
+    --bg-solid: #10110f;
+    --sidebar-solid: #161714;
+    --glass-sidebar: rgba(18, 19, 16, 0.82);
+    --canvas: #121311;
+    --canvas-dot: rgba(255, 255, 255, 0.045);
+    --card: #1b1c19;
+    --card-border: rgba(255, 255, 255, 0.06);
+    --card-shadow: none;
+    --chip-bg: #262723;
+    --hairline: rgba(255, 255, 255, 0.09);
+    --hover: rgba(255, 255, 255, 0.055);
+    --active: rgba(255, 255, 255, 0.09);
 
-    --text: #f1f3fa;
-    --text-2: #b4b9cf;
-    --text-3: #868ca6;
+    --text: #f1f1ec;
+    --text-2: #aaaaa2;
+    --text-3: #94948c;
 
-    --accent: #5b9bff;
-    --rec-red: #ff5d66;
-    --rec-yellow: #f5c030;
-    --rec-green: #3fd884;
-    --sleep: #9a8cff;
-    --strain: #4cb0ff;
-    --stress: #ec78bb;
-    --band-track: rgba(255, 255, 255, 0.1);
+    --accent: #f1f1ec;
+    --on-accent: #151613;
+    --lime: #d4f23c;
+    --lime-halo: rgba(212, 242, 60, 0.22);
 
-    --stage-awake: #f5ad5e;
-    --stage-light: #6f9be0;
-    --stage-deep: #5a7bf0;
-    --stage-rem: #bd86f0;
-    --zone-1: #7f9fbd;
-    --zone-2: #4cc3e8;
-    --zone-3: #45d09a;
-    --zone-4: #f5ae45;
-    --zone-5: #ff5d66;
-    --ok: #3fd884;
-    --warn: #f5a83c;
-    --alert: #ff5d66;
+    --rec-red: #ec8063;
+    --rec-yellow: #e2bd3a;
+    --rec-green: #64b06f;
+    --sleep: #8aa1c2;
+    --strain: #eb9f4c;
+    --stress: #d987a3;
+    --band-track: rgba(255, 255, 255, 0.09);
 
-    --chart-grid: rgba(255, 255, 255, 0.08);
-    --chart-axis: #868ca6;
-    --span-sleep: rgba(154, 140, 255, 0.14);
-    --span-activity: rgba(76, 176, 255, 0.16);
-    --span-gap: rgba(160, 165, 190, 0.18);
+    --stage-awake: #eeb07c;
+    --stage-light: #87a2c4;
+    --stage-deep: #5d7cab;
+    --stage-rem: #ad9fdb;
+    --zone-1: #8f9daa;
+    --zone-2: #7fb5a2;
+    --zone-3: #a6cb63;
+    --zone-4: #eab94a;
+    --zone-5: #ec8063;
+    --ok: #64b06f;
+    --warn: #e6a740;
+    --alert: #ec7158;
+
+    --chart-grid: rgba(255, 255, 255, 0.07);
+    --chart-axis: #94948c;
+    --span-sleep: rgba(138, 161, 194, 0.14);
+    --span-activity: rgba(235, 159, 76, 0.15);
+    --span-gap: rgba(160, 160, 150, 0.15);
   }
 }
 
-/* Glass modes, set by lib/glass.ts on <html data-glass>. */
-:root[data-glass="real"] { --glass-sidebar: rgba(255, 255, 255, 0.12); }
-@media (prefers-color-scheme: dark) { :root[data-glass="real"] { --glass-sidebar: rgba(10, 12, 20, 0.12); } }
-/* Real glass already lightens/blurs the backdrop; make cards a bit more solid for contrast. */
-:root[data-glass="real"] { --card: rgba(255, 255, 255, 0.84); }
-@media (prefers-color-scheme: dark) { :root[data-glass="real"] { --card: rgba(30, 33, 46, 0.82); } }
+/* Glass modes, set by lib/glass.ts on <html data-glass>. Only the sidebar shows glass; the canvas stays solid. */
+:root[data-glass="real"] { --glass-sidebar: rgba(240, 240, 237, 0.8); }
+@media (prefers-color-scheme: dark) { :root[data-glass="real"] { --glass-sidebar: rgba(18, 19, 16, 0.8); } }

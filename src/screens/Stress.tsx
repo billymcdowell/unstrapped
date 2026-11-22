@@ -40,18 +40,16 @@ function StressBody({ d }: { d: StressData }) {
   const hasSeries = d.series.ts.length > 1;
   return (
     <>
-      <Card>
-        <div className="row" style={{ gap: 32 }}>
-          <div className="stat">
-            <span className="stat-label">Current stress</span>
-            <span className="stat-value num" style={{ fontSize: 48, color: d.band ? BAND_COLOR[d.band] : undefined }}>{fmt(d.current, 1)}<span className="stat-unit">/ 3</span></span>
-          </div>
-          <div className="col" style={{ gap: 6 }}>
-            {d.band ? <span className="pill" style={{ background: BAND_COLOR[d.band], color: "#fff", alignSelf: "flex-start" }}>{stressBandLabel[d.band]}</span> : <span className="pill">No current reading</span>}
-            <p className="muted">Low 0–{d.thresholds.lowMax} · Medium {d.thresholds.lowMax}–{d.thresholds.mediumMax} · High {d.thresholds.mediumMax}–3</p>
-          </div>
+      <section className={`card tone ${d.band === "high" ? "tone-coral" : d.band === "medium" ? "tone-yellow" : "tone-rose"} hero`}>
+        <div className="stat">
+          <span className="score-label">Current stress</span>
+          <span className="hero-value num">{fmt(d.current, 1)}<span className="score-unit">/ 3</span></span>
         </div>
-      </Card>
+        <div className="col" style={{ gap: 8 }}>
+          <span className="pill" style={{ alignSelf: "flex-start" }}>{d.band ? stressBandLabel[d.band] : "No current reading"}</span>
+          <p className="muted">Low 0–{d.thresholds.lowMax} · Medium {d.thresholds.lowMax}–{d.thresholds.mediumMax} · High {d.thresholds.mediumMax}–3</p>
+        </div>
+      </section>
 
       <Card title="Since you woke up">
         {hasSeries ? (

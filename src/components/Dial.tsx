@@ -5,10 +5,10 @@ export interface DialProps {
   value: number | null;
   /** 100 for Sleep/Recovery, 21 for Strain. */
   max?: number;
-  /** Ring colour, CSS colour or var(). */
+  /** Arc colour, CSS colour or var(). Use "var(--text)" on tone tiles. */
   color: string;
-  /** Uppercase caption under the ring, e.g. "Recovery". */
-  label: string;
+  /** Caption under the ring, e.g. "Recovery". */
+  label?: string;
   /** Text shown in the centre; defaults to rounded value (+ "%" when max is 100). */
   display?: string;
   /** Small text under the centre number. */
@@ -18,40 +18,51 @@ export interface DialProps {
   /** Line under the label, e.g. "target 14–18". */
   caption?: string;
   size?: number;
+  /** Draw the ring only (the number is shown elsewhere, e.g. on a score tile). */
+  bare?: boolean;
   onClick?: () => void;
 }
 
-/** SVG ring dial drawn with stroke-dasharray. */
-export function Dial({ value, max = 100, color, label, display, sub, target, caption, size = 160, onClick }: DialProps) {
-  const stroke = 14;
-  const r = (size - stroke) / 2 - (target ? 7 : 0);
+/** Line-art ring: faint concentric guides, a thin arc, and a lime marker at the current value. */
+export function Dial({ value, max = 100, color, label, display, sub, target, caption, size = 160, bare, onClick }: DialProps) {
+  const r = size / 2 - 12;
   const c = 2 * Math.PI * r;
   const frac = value === null ? 0 : clamp(value / max, 0, 1);
-  const rt = r + stroke / 2 + 5;
+  const rt = r + 8;
   const ct = 2 * Math.PI * rt;
   const text = display ?? (value === null ? "—" : max === 100 ? `${Math.round(value)}%` : value.toFixed(1));
+  const a = frac * 2 * Math.PI;
+  const mx = Math.cos(a) * r, my = Math.sin(a) * r; // marker, in the rotated frame
+  const guides = [0.86, 0.72, 0.58, 0.44];
   const body = (
     <>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={`${label} ${text}`}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={`${label ?? "Score"} ${text}`}>
         <g transform={`translate(${size / 2} ${size / 2}) rotate(-90)`}>
-          <circle r={r} fill="none" stroke="var(--band-track)" strokeWidth={stroke} />
+          {guides.map((g) => <circle key={g} className="dial-guide" r={r * g} fill="none" stroke="var(--text)" strokeOpacity={0.09} strokeWidth={0.75} />)}
+          <circle className="dial-track" r={r} fill="none" stroke="var(--band-track)" strokeWidth={1.25} />
           {target && (
             <circle
-              r={rt} fill="none" stroke={color} strokeOpacity={0.35} strokeWidth={5} strokeLinecap="round"
+              r={rt} fill="none" stroke={color} strokeOpacity={0.5} strokeWidth={2} strokeLinecap="round"
               strokeDasharray={`${clamp((target.hi - target.lo) / max, 0, 1) * ct} ${ct}`}
               transform={`rotate(${clamp(target.lo / max, 0, 1) * 360})`}
             />
           )}
           <circle
-            className="dial-arc" r={r} fill="none" stroke={color} strokeWidth={stroke} strokeLinecap="round"
+            className="dial-arc" r={r} fill="none" stroke={color} strokeWidth={3} strokeLinecap="round"
             strokeDasharray={`${frac * c} ${c}`} opacity={value === null ? 0 : 1}
           />
+          {value !== null && (
+            <>
+              <circle className="lime-halo" cx={mx} cy={my} r={11} />
+              <circle className="lime-dot" cx={mx} cy={my} r={5} />
+            </>
+          )}
         </g>
-        <text className="dial-value num" x="50%" y={sub ? "48%" : "52%"} textAnchor="middle" dominantBaseline="middle">{text}</text>
-        {sub && <text className="dial-sub" x="50%" y="64%" textAnchor="middle">{sub}</text>}
+        {!bare && <text className="dial-value num" x="50%" y={sub ? "47%" : "51%"} textAnchor="middle" dominantBaseline="middle">{text}</text>}
+        {!bare && sub && <text className="dial-sub" x="50%" y="62%" textAnchor="middle">{sub}</text>}
       </svg>
-      <span className="dial-label">{label}</span>
-      <span className="dial-caption">{caption ?? ""}</span>
+      {label && !bare && <span className="dial-label">{label}</span>}
+      {caption !== undefined && !bare && <span className="dial-caption">{caption}</span>}
     </>
   );
   return onClick ? (

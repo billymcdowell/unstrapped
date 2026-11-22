@@ -11,6 +11,10 @@ export const fmt = (n: number | null | undefined, digits = 0): string =>
 export const bandVar = (b: Band | null | undefined): string =>
   b ? `var(--${b === "red" ? "rec-red" : b === "yellow" ? "rec-yellow" : "rec-green"})` : "var(--text-3)";
 
+/** Gradient tile tone for a recovery band. */
+export const bandTone = (b: Band | null | undefined): "green" | "yellow" | "coral" | "dusk" =>
+  b === "green" ? "green" : b === "yellow" ? "yellow" : b === "red" ? "coral" : "dusk";
+
 export const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 
 export const ZONE_COLORS = ["var(--zone-1)", "var(--zone-2)", "var(--zone-3)", "var(--zone-4)", "var(--zone-5)"];

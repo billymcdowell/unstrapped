@@ -3,8 +3,10 @@ html, body, #root { height: 100%; margin: 0; }
 html, body { background: transparent; } /* needed so the glass shows through */
 body {
   font-family: var(--font);
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 450;
+  letter-spacing: 0.005em;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
@@ -14,11 +16,12 @@ body {
 /* No glass (browser preview, or plugin failed): paint a solid background. */
 :root[data-glass="none"] body { background: var(--bg-solid); }
 :root[data-glass="vibrancy"] body { background: color-mix(in srgb, var(--bg-solid) 55%, transparent); }
+::selection { background: var(--lime-halo); }
 
 button { font: inherit; color: inherit; cursor: default; }
 h1, h2, h3, p { margin: 0; }
 input, select { font: inherit; color: inherit; }
-.num { font-variant-numeric: tabular-nums; }
+.num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
 .muted { color: var(--text-2); }
 .faint { color: var(--text-3); }
 .mono { font-family: var(--mono); }

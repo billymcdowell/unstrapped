@@ -26,19 +26,22 @@ export function Healthspan() {
 function Body({ d }: { d: HealthspanData }) {
   const diff = Math.round((d.strapAge - d.chronologicalAge) * 10) / 10;
   const younger = diff < 0;
-  const color = diff === 0 ? "var(--text)" : younger ? "var(--ok)" : "var(--warn)";
   return (
     <>
       <div className="grid g2">
-        <Card title="Physiological age">
-          <div className="row" style={{ gap: 28, alignItems: "flex-end" }}>
-            <div className="stat"><span className="stat-label">Strap age</span><span className="num" style={{ fontSize: 64, fontWeight: 700, lineHeight: 1, color }}>{fmt(d.strapAge, 1)}</span></div>
-            <div className="stat"><span className="stat-label">Your age</span><span className="num" style={{ fontSize: 32, fontWeight: 650, color: "var(--text-2)" }}>{fmt(d.chronologicalAge, 0)}</span></div>
+        <section className={`card tone ${younger || diff === 0 ? "tone-green" : "tone-coral"} score-tile`} style={{ minHeight: 300 }}>
+          <div className="row" style={{ alignItems: "baseline" }}>
+            <span className="score-label">Physiological age</span>
+            <span className="spacer" />
+            <span className="num" style={{ fontSize: 22, fontWeight: 300 }}>{diff === 0 ? "±0" : `${younger ? "−" : "+"}${Math.abs(diff).toFixed(1)}`}<span className="score-unit" style={{ fontSize: 13 }}>years</span></span>
           </div>
-          <p style={{ marginTop: 10, fontSize: 15 }}>
-            {diff === 0 ? "About the same as your age." : <><b style={{ color }}>{Math.abs(diff).toFixed(1)} years {younger ? "younger" : "older"}</b> than your age.</>}
+          <span className="score-value num">{fmt(d.strapAge, 1)}</span>
+          <span className="score-caption">years · you are {fmt(d.chronologicalAge, 0)}</span>
+          <div className="score-art"><AgeOrbit younger={younger} /></div>
+          <p style={{ fontSize: 15 }}>
+            {diff === 0 ? "About the same as your age." : <>{Math.abs(diff).toFixed(1)} years {younger ? "younger" : "older"} than your age.</>}
           </p>
-        </Card>
+        </section>
         <Card title="Pace of aging">
           <Gauge pace={d.paceOfAging} />
         </Card>
@@ -50,7 +53,7 @@ function Body({ d }: { d: HealthspanData }) {
           </div>
           {d.contributors.map((c) => (
             <div key={c.key} className="list-row">
-              <span style={{ flex: 1, fontWeight: 550 }}>{c.label}</span>
+              <span style={{ flex: 1, fontWeight: 500 }}>{c.label}</span>
               <span className="contrib-col num">{c.average}</span>
               <span className="contrib-col num muted">{c.target}</span>
               <span className="contrib-col right num" style={{ fontWeight: 650, color: c.yearsImpact > 0 ? "var(--ok)" : c.yearsImpact < 0 ? "var(--alert)" : "var(--text-3)" }}>
@@ -76,15 +79,31 @@ function Gauge({ pace }: { pace: number }) {
   return (
     <div className="col" style={{ alignItems: "center", gap: 4 }}>
       <svg width={w} height={150} viewBox={`0 0 ${w} 150`} role="img" aria-label={`Pace of aging ${pace.toFixed(2)}`}>
-        <path d={arc(lo, 1)} fill="none" stroke="var(--ok)" strokeWidth={14} strokeLinecap="round" opacity={0.75} />
-        <path d={arc(1, hi)} fill="none" stroke="var(--alert)" strokeWidth={14} strokeLinecap="round" opacity={0.75} />
-        <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="var(--text)" strokeWidth={3} strokeLinecap="round" />
-        <circle cx={cx} cy={cy} r={6} fill="var(--text)" />
+        <path d={arc(lo, 1)} fill="none" stroke="var(--ok)" strokeWidth={4} strokeLinecap="round" />
+        <path d={arc(1, hi)} fill="none" stroke="var(--alert)" strokeWidth={4} strokeLinecap="round" />
+        <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="var(--text)" strokeWidth={1.5} strokeLinecap="round" />
+        <circle cx={cx} cy={cy} r={4} fill="var(--text)" />
+        <circle cx={nx} cy={ny} r={10} className="lime-halo" />
+        <circle cx={nx} cy={ny} r={5} className="lime-dot" />
         <text x={cx - r} y={cy + 20} textAnchor="middle" className="dial-sub">{lo}</text>
         <text x={cx + r} y={cy + 20} textAnchor="middle" className="dial-sub">{hi}</text>
       </svg>
-      <span className="num" style={{ fontSize: 30, fontWeight: 700 }}>{pace.toFixed(2)}<span className="stat-unit">years per year</span></span>
+      <span className="num" style={{ fontSize: 40, fontWeight: 300, letterSpacing: "-0.03em" }}>{pace.toFixed(2)}<span className="stat-unit">years per year</span></span>
       <span className="muted">{slower ? "Ageing slower than the calendar." : faster ? "Ageing faster than the calendar." : "Ageing at a normal pace."}</span>
     </div>
+  );
+}
+
+/** Decorative line art: stacked ellipses pinched at the centre, with a lime marker. */
+function AgeOrbit({ younger }: { younger: boolean }) {
+  const rings = Array.from({ length: 9 }, (_, i) => i);
+  return (
+    <svg width="220" height="120" viewBox="-110 -60 220 120" aria-hidden="true" fill="none" stroke="#fff" strokeWidth={0.8}>
+      {rings.map((i) => <ellipse key={`a${i}`} cx={0} cy={-28 + i * 0.6} rx={30 + i * 9} ry={26 - i * 2.4} strokeOpacity={0.22 + i * 0.05} />)}
+      {rings.map((i) => <ellipse key={`b${i}`} cx={0} cy={28 - i * 0.6} rx={30 + i * 9} ry={26 - i * 2.4} strokeOpacity={0.22 + i * 0.05} />)}
+      <line x1={-110} y1={0} x2={110} y2={0} strokeOpacity={0.35} />
+      <circle cx={younger ? -40 : 40} cy={0} r={11} className="lime-halo" stroke="none" />
+      <circle cx={younger ? -40 : 40} cy={0} r={5} className="lime-dot" stroke="none" />
+    </svg>
   );
 }

@@ -74,7 +74,7 @@ export function TimeSeriesChart({ series, height = 220, color = "var(--accent)",
       ],
       series: [
         {},
-        { stroke, width: 1.75, spanGaps: false, points: { show: false }, fill: fill ? `${lineColor}22` : undefined },
+        { stroke, width: 1.5, spanGaps: false, points: { show: false }, fill: fill ? `${lineColor}1a` : undefined },
       ],
       hooks: {
         drawClear: [

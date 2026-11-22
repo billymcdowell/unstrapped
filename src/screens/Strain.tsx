@@ -31,24 +31,23 @@ function StrainBody({ d }: { d: StrainData }) {
   const progress = hasTarget && d.targetLo! > 0 ? Math.min(100, Math.round((d.value / d.targetLo!) * 100)) : null;
   return (
     <>
-      <Card>
-        <div className="row" style={{ gap: 32 }}>
-          <Dial
-            label="Day strain" color="var(--strain)" max={21} value={d.value} size={180} sub={strainBandLabel[d.band]}
-            target={hasTarget ? { lo: d.targetLo!, hi: d.targetHi! } : null}
-          />
-          <div className="col" style={{ gap: 6 }}>
+      <section className="card tone tone-ochre hero">
+        <Dial
+          bare label="Day strain" color="var(--text)" max={21} value={d.value} size={200}
+          target={hasTarget ? { lo: d.targetLo!, hi: d.targetHi! } : null}
+        />
+        <div className="col" style={{ gap: 10 }}>
             <span className="pill" style={{ alignSelf: "flex-start" }}>{strainBandLabel[d.band]}</span>
+            <span className="hero-value num">{d.value.toFixed(1)}<span className="score-unit">/ 21</span></span>
             {hasTarget ? (
               <>
-                <p style={{ fontSize: 18, fontWeight: 600 }}>Target {d.targetLo}–{d.targetHi}</p>
+                <p className="hero-text">Target {d.targetLo}–{d.targetHi}</p>
                 <p className="muted">{progress !== null && progress >= 100 ? "You've reached your target range." : `${progress ?? 0}% of the way to the bottom of your target range.`}</p>
               </>
             ) : <p className="muted">No target yet — it's set from your recovery.</p>}
             <p className="faint">Light 0–9 · Moderate 10–13 · High 14–17 · All out 18–21</p>
-          </div>
         </div>
-      </Card>
+      </section>
 
       <Card title="Heart rate">
         <TimeSeriesChart
@@ -90,7 +89,7 @@ function ActivityDetailView({ id }: { id: string }) {
   const [saving, setSaving] = useState(false);
   useEffect(() => { if (data) setName(data.summary.kind); }, [data]);
 
-  if (error && !data) return <div className="page"><button className="btn sm" onClick={() => nav.openActivity(null)}>◀ Back</button><EmptyState title="Couldn't load activity" detail={error} /></div>;
+  if (error && !data) return <div className="page"><button className="btn sm" onClick={() => nav.openActivity(null)}>← Back</button><EmptyState title="Couldn't load activity" detail={error} /></div>;
   if (!data) return <div className="page"><div className="empty faint">Loading…</div></div>;
   const a = data.summary;
   const rename = async () => {
@@ -101,7 +100,7 @@ function ActivityDetailView({ id }: { id: string }) {
   return (
     <div className="page">
       <div className="row">
-        <button className="btn sm" onClick={() => nav.openActivity(null)}>◀ Back to strain</button>
+        <button className="btn sm" onClick={() => nav.openActivity(null)}>← Back to strain</button>
       </div>
       <div className="row wrap">
         <input aria-label="Activity type" className="page-title" value={name} onChange={(e) => setName(e.target.value)} onBlur={rename}
@@ -114,7 +113,7 @@ function ActivityDetailView({ id }: { id: string }) {
         <Card title="Heart rate">
           <TimeSeriesChart series={data.hr} height={230} zones={hrZones(data.zoneBounds)} yRange={[40, data.maxHr]} ariaLabel="Heart rate during activity" />
         </Card>
-        <Card><Dial label="Activity strain" color="var(--strain)" max={21} value={a.strain} sub={strainBandLabel[a.strain >= 18 ? "allOut" : a.strain >= 14 ? "high" : a.strain >= 10 ? "moderate" : "light"]} /></Card>
+        <Card title="Activity strain"><Dial color="var(--strain)" max={21} value={a.strain} sub={strainBandLabel[a.strain >= 18 ? "allOut" : a.strain >= 14 ? "high" : a.strain >= 10 ? "moderate" : "light"]} /></Card>
       </div>
       <div className="grid g2">
         <Card title="Time in zones"><ZoneBars zoneMin={a.zoneMin} bounds={data.zoneBounds} /></Card>

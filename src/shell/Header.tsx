@@ -1,5 +1,6 @@
 import { useNav, useStrap, type ScreenId } from "../lib/app-context";
 import { addDays, formatDayLong, fmtTime, today } from "../lib/date";
+import { ChevronLeft, ChevronRight } from "./icons";
 
 const DAY_SCREENS: ScreenId[] = ["home", "sleep", "recovery", "strain", "health", "stress", "journal"];
 const TITLES: Record<ScreenId, string> = {
@@ -16,9 +17,9 @@ export function Header() {
     <header className="header" data-tauri-drag-region>
       {isDay ? (
         <div className="daynav">
-          <button className="icon-btn" aria-label="Previous day" onClick={() => setDay(addDays(day, -1))}>◀</button>
+          <button className="icon-btn" aria-label="Previous day" onClick={() => setDay(addDays(day, -1))}><ChevronLeft /></button>
           <span className="day-label">{formatDayLong(day)}</span>
-          <button className="icon-btn" aria-label="Next day" disabled={day >= t} onClick={() => setDay(addDays(day, 1))}>▶</button>
+          <button className="icon-btn" aria-label="Next day" disabled={day >= t} onClick={() => setDay(addDays(day, 1))}><ChevronRight /></button>
           {day !== t && <button className="btn sm" onClick={() => setDay(t)}>Today</button>}
         </div>
       ) : (
@@ -32,9 +33,9 @@ export function Header() {
             <span className="sync-bar"><i style={{ width: `${Math.round(progress.fraction * 100)}%` }} /></span>
           </>
         ) : status?.lastSyncMs ? (
-          <span>Synced {fmtTime(status.lastSyncMs)} <span style={{ color: "var(--ok)" }}>✓</span></span>
+          <><span className="dot on" style={{ width: 6, height: 6 }} /><span>Synced {fmtTime(status.lastSyncMs)}</span></>
         ) : (
-          <span className="faint">Not synced yet</span>
+          <><span className="dot" style={{ width: 6, height: 6 }} /><span className="faint">Not synced yet</span></>
         )}
       </div>
     </header>

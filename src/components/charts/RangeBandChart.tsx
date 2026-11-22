@@ -27,11 +27,11 @@ export function RangeBandChart({ points, unit = "", height = 250, digits = 1 }: 
       yAxis: { type: "value", scale: true, axisLabel: { color: th.text }, splitLine: { lineStyle: { color: th.grid } } },
       series: [
         { name: "lo", type: "line", stack: "band", symbol: "none", silent: true, lineStyle: { opacity: 0 }, data: points.map((p) => p.lo) },
-        { name: "range", type: "line", stack: "band", symbol: "none", silent: true, lineStyle: { opacity: 0 }, areaStyle: { color: th.accent, opacity: 0.14 }, data: points.map((p) => (p.lo !== null && p.hi !== null ? p.hi - p.lo : null)) },
+        { name: "range", type: "line", stack: "band", symbol: "none", silent: true, lineStyle: { opacity: 0 }, areaStyle: { color: th.accent, opacity: 0.07 }, data: points.map((p) => (p.lo !== null && p.hi !== null ? p.hi - p.lo : null)) },
         {
           name: "value", type: "line", smooth: 0.15, connectNulls: false, symbol: "circle", symbolSize: 5,
-          lineStyle: { color: th.accent, width: 2 }, itemStyle: { color: th.accent },
-          data: points.map((p) => (out(p) ? { value: p.value, symbolSize: 11, itemStyle: { color: warn, borderColor: "#fff", borderWidth: 1.5 } } : p.value)),
+          lineStyle: { color: th.accent, width: 1.5 }, itemStyle: { color: th.accent },
+          data: points.map((p) => (out(p) ? { value: p.value, symbolSize: 11, itemStyle: { color: warn, borderColor: th.card, borderWidth: 2 } } : p.value)),
         },
       ],
     };

@@ -13,7 +13,6 @@ const STAGES = [
   { key: "rem", label: "REM", color: "var(--stage-rem)" },
 ] as const;
 
-const CONTRIB_COLOR = "var(--sleep)";
 
 export function Sleep() {
   const nav = useNav();
@@ -43,12 +42,18 @@ function SleepBody({ d }: { d: SleepData }) {
   return (
     <>
       <div className="grid g-main">
-        <Card><div className="row" style={{ gap: 32, alignItems: "flex-start" }}>
-          <Dial label="Sleep performance" color={CONTRIB_COLOR} value={d.performance} size={170} />
-          <div className="col" style={{ flex: 1, gap: 16, paddingTop: 8 }}>
-            {d.contributors.map((c) => <ContributorBar key={c.key} label={c.label} value={c.pct ?? 0} valueText={c.pct === null ? "—" : undefined} color={CONTRIB_COLOR} />)}
+        <section className="card tone tone-dusk hero">
+          <div className="col" style={{ alignItems: "center", gap: 4 }}>
+            <Dial bare label="Sleep performance" color="var(--text)" value={d.performance} size={170} />
           </div>
-        </div></Card>
+          <div className="col" style={{ gap: 14 }}>
+            <div className="row" style={{ alignItems: "baseline" }}>
+              <span className="hero-value num" style={{ fontSize: 72 }}>{Math.round(d.performance)}<span className="score-unit">%</span></span>
+              <span className="muted">Sleep performance</span>
+            </div>
+            {d.contributors.map((c) => <ContributorBar key={c.key} label={c.label} value={c.pct ?? 0} valueText={c.pct === null ? "—" : undefined} color="var(--text)" />)}
+          </div>
+        </section>
         <Card title="Restorative sleep">
           <StatTile label="Deep + REM" value={fmtDuration(d.restorative.min)} sub={`${fmt(d.restorative.pctOfAsleep)}% of time asleep · 40–50% is optimal`} />
         </Card>

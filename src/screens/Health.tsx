@@ -37,7 +37,7 @@ function LiveHr({ fallback }: { fallback: number | null }) {
         </div>
       ) : (
         <div className="col" style={{ gap: 2 }}>
-          <span style={{ fontSize: 20, fontWeight: 650 }}>Live when connected</span>
+          <span style={{ fontSize: 22, fontWeight: 400 }}>Live when connected</span>
           <span className="muted">Connect your strap on the Strap screen to see your heart rate update here.</span>
         </div>
       )}
@@ -105,7 +105,7 @@ function MetricView({ metric, onBack }: { metric: HealthMetricKey; onBack: () =>
   const { data, error } = useApi(() => api.getMetricDetail(metric, nav.day), [metric, nav.day]);
   return (
     <div className="page">
-      <div className="row"><button className="btn sm" onClick={onBack}>◀ Back to Health Monitor</button></div>
+      <div className="row"><button className="btn sm" onClick={onBack}>← Back to Health Monitor</button></div>
       {error && !data ? <EmptyState title="Couldn't load" detail={error} /> : (
         <ResultView result={data}>{(d) => <MetricBody d={d} />}</ResultView>
       )}

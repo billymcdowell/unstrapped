@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useColorScheme } from "../../lib/hooks";
 import { resolveColor } from "../../lib/format";
-import { chartTheme } from "./theme";
+import { chartTheme, overCard, readableOn } from "./theme";
 import { EChart } from "./EChart";
 
 export interface StackPart { label: string; value: number; color: string }
@@ -27,13 +27,14 @@ export function StackedBar({ rows, height, formatValue = (v) => String(Math.roun
       xAxis: { type: "value", show: false, max: normalize ? 100 : undefined },
       yAxis: { type: "category", inverse: true, data: rows.map((r) => r.name), axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: th.text } },
       series: labels.map((label) => ({
-        name: label, type: "bar", stack: "t", barWidth: 20,
-        itemStyle: { borderRadius: 3 },
-        label: { show: true, color: "#fff", fontSize: 10, formatter: (p: { value: number }) => (p.value > (normalize ? 7 : 0) ? formatValue(p.value, label) : "") },
+        name: label, type: "bar", stack: "t", barWidth: 16,
+        itemStyle: { borderRadius: 2 },
+        label: { show: true, fontSize: 11, fontWeight: 600, formatter: (p: { value: number }) => (p.value > (normalize ? 7 : 0) ? formatValue(p.value, label) : "") },
         data: rows.map((r, i) => {
           const part = r.parts.find((x) => x.label === label);
           const v = part ? (normalize ? (part.value / (totals[i] || 1)) * 100 : part.value) : 0;
-          return { value: v, itemStyle: { color: part ? resolveColor(part.color) : undefined, opacity: r.faint ? 0.4 : 1 } };
+          const fill = part ? (r.faint ? overCard(resolveColor(part.color), 0.4) : resolveColor(part.color)) : undefined;
+          return { value: v, itemStyle: { color: fill }, label: { color: fill ? readableOn(fill) : th.textStrong } };
         }),
       })),
     };

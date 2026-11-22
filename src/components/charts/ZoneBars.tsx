@@ -15,9 +15,9 @@ export function ZoneBars({ zoneMin, bounds, height = 170 }: { zoneMin: number[];
       xAxis: { type: "value", show: false },
       yAxis: { type: "category", inverse: true, data: zoneMin.map((_, i) => name(i)), axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: th.text, fontSize: 11 } },
       series: [{
-        type: "bar", barWidth: 16, showBackground: true, backgroundStyle: { color: th.track, borderRadius: 4 },
+        type: "bar", barWidth: 10, showBackground: true, backgroundStyle: { color: th.track, borderRadius: 2 },
         label: { show: true, position: "right", color: th.text, formatter: (p: { value: number }) => `${Math.round(p.value)} min` },
-        data: zoneMin.map((m, i) => ({ value: m, itemStyle: { color: th.zones[i], borderRadius: 4 } })),
+        data: zoneMin.map((m, i) => ({ value: m, itemStyle: { color: th.zones[i], borderRadius: 2 } })),
       }],
     };
   }, [zoneMin, bounds, scheme]);

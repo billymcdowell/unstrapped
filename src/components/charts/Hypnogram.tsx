@@ -36,7 +36,7 @@ export function Hypnogram({ segments, disturbancesMs = [], height = 200 }: { seg
             const a = api.coord([api.value(0), api.value(2)]);
             const b = api.coord([api.value(1), api.value(2)]);
             const stage = api.value(3) as SleepStage;
-            return { type: "rect", shape: { x: a[0], y: a[1] - 9, width: Math.max(1, b[0] - a[0]), height: 18, r: 3 }, style: { fill: th.stages[stage] } };
+            return { type: "rect", shape: { x: a[0], y: a[1] - 7, width: Math.max(1, b[0] - a[0]), height: 14, r: 2 }, style: { fill: th.stages[stage] } };
           },
         },
         { type: "scatter", symbol: "triangle", symbolSize: 8, itemStyle: { color: th.stages.awake }, data: disturbancesMs.map((t) => [t, 3.65]), tooltip: { show: true } },

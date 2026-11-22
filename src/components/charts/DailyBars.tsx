@@ -21,8 +21,8 @@ export function DailyBars({ points, unit = "", yMax, yMin, baseline, line, heigh
       xAxis: { type: "category", data: points.map((p) => p.label), axisTick: { show: false }, axisLine: { lineStyle: { color: th.grid } }, axisLabel: { color: th.text, hideOverlap: true } },
       yAxis: { type: "value", min: yMin, max: yMax, axisLabel: { color: th.text }, splitLine: { lineStyle: { color: th.grid } } },
       series: [line
-        ? { type: "line", smooth: 0.2, symbol: "circle", symbolSize: 5, connectNulls: false, lineStyle: { color: c, width: 2 }, itemStyle: { color: c }, markArea: mark, data: points.map((p) => p.value) }
-        : { type: "bar", barMaxWidth: 26, itemStyle: { borderRadius: [4, 4, 0, 0] }, markArea: mark, data: points.map((p) => ({ value: p.value, itemStyle: { color: p.color ? resolveColor(p.color) : c } })) }],
+        ? { type: "line", smooth: 0.2, symbol: "circle", symbolSize: 6, connectNulls: false, lineStyle: { color: c, width: 1.5 }, itemStyle: { color: c }, markArea: mark, data: points.map((p) => p.value) }
+        : { type: "bar", barMaxWidth: 18, itemStyle: { borderRadius: [3, 3, 0, 0] }, markArea: mark, data: points.map((p) => ({ value: p.value, itemStyle: { color: p.color ? resolveColor(p.color) : c } })) }],
     };
   }, [points, unit, yMax, yMin, baseline, line, color, scheme]);
   return <EChart option={option} height={height} ariaLabel="Daily values" />;

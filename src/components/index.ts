@@ -31,3 +31,5 @@ export { TrainingResponseChart } from "./charts/TrainingResponseChart";
 export { DivergingBars, signed } from "./DivergingBars";
 export type { DivergingRow } from "./DivergingBars";
 export { BreathingTimer } from "./BreathingTimer";
+export { ScoreTile } from "./ScoreTile";
+export type { ScoreTileProps, Tone } from "./ScoreTile";

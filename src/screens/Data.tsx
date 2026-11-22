@@ -85,8 +85,8 @@ function TrendsCard() {
         <EmptyState title="No resting HR or HRV in this range" />
       ) : (
         <div className="grid g2">
-          <div><div className="stat-label">Resting HR (bpm)</div><DailyBars points={rhr} line color="#e5484d" unit=" bpm" height={200} /></div>
-          <div><div className="stat-label">HRV (ms)</div><DailyBars points={hrv} line color="#7a6ae6" unit=" ms" height={200} /></div>
+          <div><div className="stat-label">Resting HR (bpm)</div><DailyBars points={rhr} line color="var(--rec-red)" unit=" bpm" height={200} /></div>
+          <div><div className="stat-label">HRV (ms)</div><DailyBars points={hrv} line color="var(--sleep)" unit=" ms" height={200} /></div>
         </div>
       )}
     </Card>
