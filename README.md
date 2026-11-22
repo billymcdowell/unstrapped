@@ -1,3 +1,5 @@
+<img src="src-tauri/icons/128x128@2x.png" alt="Unstrapped icon" width="112" align="right">
+
 # Unstrapped
 
 **Your strap, your data, your Mac.** Unstrapped is a local-first macOS app that syncs a WHOOP 4.0 or 5.0
